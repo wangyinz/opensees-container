@@ -18,6 +18,8 @@
 #
 ######################################################
 FROM ubuntu:20.04
+ARG DEBIAN_FRONTEND=noninteractive
+ENV TZ=Etc/UTC
 RUN apt-get -y update && \
     apt-get -y install git emacs make tcl8.6 tcl8.6-dev gcc g++ gfortran python3-dev && \
     useradd --create-home ubuntu 
@@ -27,6 +29,7 @@ RUN cd /home/ubuntu && \
     cd OpenSees && \
     git checkout v3.3.0 && \
     cp MAKES/Makefile.def.EC2-UBUNTU Makefile.def && \
+    sed -i 's/= .\/home/= \/home\/ubuntu/g' Makefile.def && \
     make -j 28 && \
     cd SRC/interpreter && \
     make -j 28 && \
