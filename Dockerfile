@@ -17,8 +17,7 @@
 # The data will appear in your current directory at the end of the run.
 #
 ######################################################
-FROM ubuntu:12.04
-MAINTAINER Stephen Mock <mock@tacc.utexas.edu>
+FROM ubuntu:22.04
 RUN apt-get -y update && \
     apt-get -y install subversion emacs make tcl8.5 tcl8.5-dev gcc g++ gfortran && \
     useradd --create-home ubuntu && \
