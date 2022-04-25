@@ -31,6 +31,7 @@ RUN cd /home/ubuntu && \
     cp MAKES/Makefile.def.EC2-UBUNTU Makefile.def && \
     sed -i 's/= .\/home/= \/home\/ubuntu/g' Makefile.def && \
     sed -i 's/.\/usr\/local/\/usr\/local/g' Makefile.def && \
+    sed -i 's/python3.5/python3.8/g' Makefile.def && \
     make -j 28 && \
     cd SRC/interpreter && \
     make -j 28 && \
