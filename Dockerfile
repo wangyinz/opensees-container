@@ -30,6 +30,7 @@ RUN cd /home/ubuntu && \
     git checkout v3.3.0 && \
     cp MAKES/Makefile.def.EC2-UBUNTU Makefile.def && \
     sed -i 's/= .\/home/= \/home\/ubuntu/g' Makefile.def && \
+    sed -i 's/.\/usr\/local/\/usr\/local/g' Makefile.def && \
     make -j 28 && \
     cd SRC/interpreter && \
     make -j 28 && \
