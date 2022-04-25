@@ -31,7 +31,7 @@ RUN cd /home/ubuntu && \
     cd SRC/interpreter && \
     make -j 28 && \
     cd ../.. && \
-    sed -i 's/INTERPRETER_LANGUAGE = PYTHON/INTERPRETER_LANGUAGE = TCL/g' Makefile.def
+    sed -i 's/INTERPRETER_LANGUAGE = PYTHON/INTERPRETER_LANGUAGE = TCL/g' Makefile.def && \
     make wipe && \
     make -j 28
 
