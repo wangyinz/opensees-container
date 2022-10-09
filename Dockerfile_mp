@@ -38,16 +38,19 @@ RUN cd /home/ubuntu && \
     sed -i 's/OPTF    =.*/OPTF    = -O3 -fopenmp/g' Makefile.inc && \
     sed -i 's/OPTL    =.*/OPTL    = -O3 -fopenmp/g' Makefile.inc && \
     sed -i 's/OPTC    =.*/OPTC    = -O3 -fopenmp/g' Makefile.inc && \
-    make -j mumps_lib && mkdir ../mumps && mv lib ../mumps/lib && mv include ../mumps/include 
+    make -j mumps_lib && mkdir ../mumps && mv lib ../mumps/lib && mv include ../mumps/include && \
+    cd .. && rm -rf MUMPS_5.2.1
 ADD makes/Makefile.def /home/ubuntu/Makefile.def
 RUN cd /home/ubuntu && source /entry.sh && git clone https://github.com/OpenSees/OpenSees.git && \
     cd OpenSees && \
     git checkout v3.4.0 && cp ../Makefile.def ./ && \
-    PROGRAMMING_MODE=PARALLEL_INTERPRETERS make -j 28
+    PROGRAMMING_MODE=PARALLEL_INTERPRETERS make -j 28 && \
+    mv EXAMPLES/SmallMP ../SmallMP && cd .. && rm -rf OpenSees Makefile.def
 COPY inputs /data
-RUN cp -r /home/ubuntu/OpenSees/EXAMPLES/SmallMP /data/ && \
-    cd /home/ubuntu && rm -rf MUMPS_5.2.1 OpenSees Makefile.def
+RUN mv /home/ubuntu/SmallMP /data/SmallMP && rmdir /home/scoped
 RUN chown -R ubuntu:ubuntu /home/ubuntu /data
+ENV HOME=/home/ubuntu \
+    NB_USER=
 USER ubuntu
 WORKDIR /data
 ENV PATH $PATH:/home/ubuntu/bin
