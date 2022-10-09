@@ -77,6 +77,19 @@ jobs:
       # Build and push Docker image with Buildx (don't push on PR)
       # https://github.com/docker/build-push-action
       - name: Build and push Docker image
+        uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
+        with:
+          context: .
+          file: Dockerfile_mp
+          platforms: linux/amd64
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: |
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:mp
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=local,src=/tmp/.buildx-cache-mp
+          cache-to: type=local,dest=/tmp/.buildx-cache-mp-new
+
+      - name: Build and push Docker image
         id: build-and-push
         uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
         with:
@@ -91,5 +104,6 @@ jobs:
 
       - name: Move cache
         run: |
-          rm -rf /tmp/.buildx-cache 
+          rm -rf /tmp/.buildx-cache /tmp/.buildx-cache-mp
           mv /tmp/.buildx-cache-new /tmp/.buildx-cache
+          mv /tmp/.buildx-cache-mp-new /tmp/.buildx-cache-mp
